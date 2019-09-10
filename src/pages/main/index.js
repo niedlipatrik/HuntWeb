@@ -1,9 +1,13 @@
 import React, { Component } from "react";
 import api from "../../services/api";
 
-
-
 export default class Main extends Component{
+     // Para criar variaveis reativas, deve-se declara-las no méthodo state através de um listening pelo methodo render()
+    state = {
+        products: [],
+    };
+
+
     componentDidMount(){
         this.loadProducts();
     }
@@ -11,10 +15,16 @@ export default class Main extends Component{
 loadProducts = async () => {
     const response = await api.get("/products");
 
-    console.log(response.data.docs)
+    this.setState({ products: response.data.docs });
   };
 
-  render(){
-    return <h1>Olá Main</h1>
-}
+  render() {
+    return (
+    <div className="product-list">
+    {this.state.products.map(products => (
+            <h2>{products.title}</h2>
+        ))}
+    </div>
+    );
+  };
 }
